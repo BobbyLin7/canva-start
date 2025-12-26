@@ -1,7 +1,13 @@
 import { type Canvas, FabricObject, Rect, Shadow } from "fabric";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useAutoSize } from "./use-auto-resize";
 
 export function useEditor() {
+	const [canvas, setCanvas] = useState<Canvas | null>(null);
+	const [container, setContainer] = useState<HTMLDivElement | null>(null);
+
+	useAutoSize({ canvas, container });
+
 	const init = useCallback(
 		({
 			initialCanvas,
@@ -30,6 +36,7 @@ export function useEditor() {
 					color: "rgba(0,0,0,0.8)",
 					blur: 5,
 				}),
+				name: "clip",
 			});
 
 			initialCanvas.setDimensions({
@@ -40,6 +47,9 @@ export function useEditor() {
 			initialCanvas.add(initialWorkspace);
 			initialCanvas.centerObject(initialWorkspace);
 			initialCanvas.clipPath = initialWorkspace;
+
+			setCanvas(initialCanvas);
+			setContainer(initialContainer);
 		},
 		[],
 	);
