@@ -1,4 +1,10 @@
 {
+  "eslint.enable": false,
+  "prettier.enable": false,
+
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
+  
   "files.watcherExclude": {
     "**/routeTree.gen.ts": true
   },
@@ -30,6 +36,7 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "editor.codeActionsOnSave": {
-    "source.organizeImports.biome": "explicit"
+    "source.organizeImports.biome": "explicit",
+    "source.fixAll.biome": "explicit"
   }
 }
