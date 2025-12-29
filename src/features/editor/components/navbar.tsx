@@ -18,9 +18,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import type { ActiveTool } from "../types";
 import { Logo } from "./logo";
 
-export const Navbar = () => {
+interface Props {
+	activeTool: ActiveTool;
+	onChangeActiveTool: (tool: ActiveTool) => void;
+}
+
+export const Navbar = ({ activeTool, onChangeActiveTool }: Props) => {
+	const isPending = false;
+
+	const isError = false;
+
 	return (
 		<nav className="flex h-[68px] w-full items-center gap-x-8 border-b p-4 lg:pl-[34px]">
 			<Logo />
@@ -49,8 +59,8 @@ export const Navbar = () => {
 					<Button
 						variant="ghost"
 						size="icon"
-						onClick={() => {}}
-						className={cn("")}
+						onClick={() => onChangeActiveTool("select")}
+						className={cn(activeTool === "select" && "bg-gray-100")}
 					>
 						<MousePointerClickIcon className="size-4" />
 					</Button>
@@ -76,18 +86,24 @@ export const Navbar = () => {
 					</Button>
 				</Hint>
 				<Separator orientation="vertical" className="mx-2" />
-				<div className="flex items-center gap-x-2">
-					<LoaderIcon className="size-4 animate-spin text-muted-foreground" />
-					<div className="text-muted-foreground text-xs">Saving...</div>
-				</div>
-				<div className="flex items-center gap-x-2">
-					<BsCloudSlash className="size-[20px] text-muted-foreground" />
-					<div className="text-muted-foreground text-xs">Failed to save</div>
-				</div>
-				<div className="flex items-center gap-x-2">
-					<BsCloudCheck className="size-[20px] text-muted-foreground" />
-					<div className="text-muted-foreground text-xs">Saved</div>
-				</div>
+				{isPending && (
+					<div className="flex items-center gap-x-2">
+						<LoaderIcon className="size-4 animate-spin text-muted-foreground" />
+						<div className="text-muted-foreground text-xs">Saving...</div>
+					</div>
+				)}
+				{!isPending && isError && (
+					<div className="flex items-center gap-x-2">
+						<BsCloudSlash className="size-[20px] text-muted-foreground" />
+						<div className="text-muted-foreground text-xs">Failed to save</div>
+					</div>
+				)}
+				{!isPending && !isError && (
+					<div className="flex items-center gap-x-2">
+						<BsCloudCheck className="size-[20px] text-muted-foreground" />
+						<div className="text-muted-foreground text-xs">Saved</div>
+					</div>
+				)}
 				<div className="ml-auto flex items-center gap-x-4">
 					<DropdownMenu modal={false}>
 						<DropdownMenuTrigger asChild>
