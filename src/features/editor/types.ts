@@ -1,4 +1,4 @@
-import type { Canvas, FabricObject } from "fabric";
+import type { Canvas, FabricObject, TextboxProps } from "fabric";
 import material from "material-colors";
 
 // Extend FabricObject to include custom properties
@@ -108,6 +108,7 @@ export interface Editor {
 	sendBackwards: () => void;
 	getActiveOpacity: () => number;
 	changeOpacity: (opacity: number) => void;
+	addText: (text: string, options: Partial<TextboxProps>) => void;
 	selectedObjects: FabricObject[];
 }
 
@@ -132,3 +133,12 @@ export const colors = [
 	material.blueGrey["500"],
 	"transparent",
 ];
+
+export const TEXT_OPTIONS = {
+	type: "textbox",
+	left: 100,
+	top: 100,
+	fill: FILL_COLOR,
+	fontSize: FONT_SIZE,
+	fontFamily: FONT_FAMILY,
+};

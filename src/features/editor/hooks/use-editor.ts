@@ -5,6 +5,8 @@ import {
 	Polygon,
 	Rect,
 	Shadow,
+	Textbox,
+	type TextboxProps,
 	Triangle,
 } from "fabric";
 import { useCallback, useMemo, useState } from "react";
@@ -18,6 +20,7 @@ import {
 	STROKE_COLOR,
 	STROKE_DASH_ARRAY,
 	STROKE_WIDTH,
+	TEXT_OPTIONS,
 	TRIANGLE_OPTIONS,
 } from "../types";
 import { isTextType } from "../utils";
@@ -258,6 +261,15 @@ const buildEditor = ({
 				object.set({ opacity: value });
 			});
 			canvas.renderAll();
+		},
+		addText: (text: string, options: Partial<TextboxProps>) => {
+			const object = new Textbox(text, {
+				...TEXT_OPTIONS,
+				fill: fillColor,
+				...options,
+			});
+
+			addToCanvas(object);
 		},
 		selectedObjects,
 	};
