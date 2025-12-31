@@ -1,3 +1,4 @@
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 import { useState } from "react";
 import { BsBorderWidth } from "react-icons/bs";
 import { Hint } from "@/components/hint";
@@ -67,6 +68,28 @@ export const Toolbar = ({ editor, activeTool, onChangeActiveTool }: Props) => {
 						className={cn(activeTool === "stroke-width" && "bg-gray-100")}
 					>
 						<BsBorderWidth className="size-4" />
+					</Button>
+				</Hint>
+			</div>
+			<div className="flex h-full items-center justify-center">
+				<Hint label="Bring forward" side="bottom" sideOffset={5}>
+					<Button
+						onClick={() => editor?.bringForward()}
+						size="icon"
+						variant="ghost"
+					>
+						<ArrowUpIcon className="size-4" />
+					</Button>
+				</Hint>
+			</div>
+			<div className="flex h-full items-center justify-center">
+				<Hint label="Send backwards" side="bottom" sideOffset={5}>
+					<Button
+						onClick={() => editor?.sendBackwards()}
+						size="icon"
+						variant="ghost"
+					>
+						<ArrowDownIcon className="size-4" />
 					</Button>
 				</Hint>
 			</div>

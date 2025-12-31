@@ -228,6 +228,20 @@ const buildEditor = ({
 			});
 			canvas.renderAll();
 		},
+		bringForward: () => {
+			canvas.getActiveObjects().forEach((object) => {
+				canvas.bringObjectForward(object);
+			});
+
+			canvas.renderAll();
+		},
+		sendBackwards: () => {
+			canvas.getActiveObjects().forEach((object) => {
+				canvas.sendObjectBackwards(object);
+			});
+
+			canvas.renderAll();
+		},
 		selectedObjects,
 	};
 };

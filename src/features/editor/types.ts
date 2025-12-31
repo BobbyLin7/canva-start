@@ -104,6 +104,8 @@ export interface Editor {
 	getActiveStrokeDashArray: () => number[];
 	changeStrokeWidth: (width: number) => void;
 	changeStrokeDashArray: (array: number[]) => void;
+	bringForward: () => void;
+	sendBackwards: () => void;
 	selectedObjects: FabricObject[];
 }
 
