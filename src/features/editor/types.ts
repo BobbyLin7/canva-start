@@ -81,12 +81,14 @@ export type BuildEditorProps = {
 	strokeColor: string;
 	strokeWidth: number;
 	strokeDashArray: number[];
+	fontFamily: string;
 	selectedObjects: FabricObject[];
 	setSelectedObjects: (objects: FabricObject[]) => void;
 	setFillColor: (color: string) => void;
 	setStrokeColor: (color: string) => void;
 	setStrokeWidth: (width: number) => void;
 	setStrokeDashArray: (array: number[]) => void;
+	setFontFamily: (font: string) => void;
 };
 
 export interface Editor {
@@ -109,6 +111,8 @@ export interface Editor {
 	getActiveOpacity: () => number;
 	changeOpacity: (opacity: number) => void;
 	addText: (text: string, options: Partial<TextboxProps>) => void;
+	getActiveFontFamily: () => string;
+	changeFontFamily: (font: string) => void;
 	selectedObjects: FabricObject[];
 }
 
@@ -142,3 +146,24 @@ export const TEXT_OPTIONS = {
 	fontSize: FONT_SIZE,
 	fontFamily: FONT_FAMILY,
 };
+
+export const fonts = [
+	"Arial",
+	"Arial Black",
+	"Verdana",
+	"Helvetica",
+	"Tahoma",
+	"Trebuchet MS",
+	"Times New Roman",
+	"Georgia",
+	"Garamond",
+	"Courier New",
+	"Brush Script MT",
+	"Palatino",
+	"Bookman",
+	"Comic Sans MS",
+	"Impact",
+	"Lucida Sans Unicode",
+	"Geneva",
+	"Lucida Console",
+];

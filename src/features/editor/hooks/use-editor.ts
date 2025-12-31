@@ -16,6 +16,7 @@ import {
 	DIAMOND_OPTIONS,
 	type Editor,
 	FILL_COLOR,
+	FONT_FAMILY,
 	RECTANGLE_OPTIONS,
 	STROKE_COLOR,
 	STROKE_DASH_ARRAY,
@@ -38,6 +39,8 @@ const buildEditor = ({
 	setStrokeColor,
 	setStrokeWidth,
 	setStrokeDashArray,
+	fontFamily,
+	setFontFamily,
 	// setSelectedObjects,
 }: BuildEditorProps): Editor => {
 	const getWorkspace = () => {
@@ -271,6 +274,26 @@ const buildEditor = ({
 
 			addToCanvas(object);
 		},
+		getActiveFontFamily: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return fontFamily;
+			}
+
+			const value = selectedObject.get("fontFamily") || fontFamily;
+
+			return value;
+		},
+		changeFontFamily: (value: string) => {
+			setFontFamily(value);
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ fontFamily: value });
+				}
+			});
+			canvas.renderAll();
+		},
 		selectedObjects,
 	};
 };
@@ -279,6 +302,7 @@ export function useEditor() {
 	const [canvas, setCanvas] = useState<Canvas | null>(null);
 	const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
+	const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
 	const [fillColor, setFillColor] = useState(FILL_COLOR);
 	const [strokeColor, setStrokeColor] = useState(STROKE_COLOR);
 	const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
@@ -310,6 +334,8 @@ export function useEditor() {
 				setStrokeWidth,
 				setStrokeDashArray,
 				setSelectedObjects,
+				fontFamily,
+				setFontFamily,
 			});
 		}
 
@@ -321,6 +347,7 @@ export function useEditor() {
 		strokeWidth,
 		strokeDashArray,
 		selectedObjects,
+		fontFamily,
 	]);
 
 	const init = useCallback(

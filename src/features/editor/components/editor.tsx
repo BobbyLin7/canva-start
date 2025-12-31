@@ -9,8 +9,10 @@ import { Sidebar } from "@/features/editor/components/sidebar";
 import { Toolbar } from "@/features/editor/components/toolbar";
 import { useEditor } from "@/features/editor/hooks/use-editor";
 import type { ActiveTool } from "@/features/editor/types";
+import { FontSidebar } from "./font-sidebar";
 import { OpacitySidebar } from "./opacity-sidebar";
 import { StrokeWidthSidebar } from "./stroke-width-sidebar";
+import { TextSidebar } from "./text-sidebar";
 
 export const Editor = () => {
 	const { init, editor } = useEditor();
@@ -79,6 +81,16 @@ export const Editor = () => {
 					onChangeActiveTool={onChangeActiveTool}
 				/>
 				<OpacitySidebar
+					editor={editor}
+					activeTool={activeTool}
+					onChangeActiveTool={onChangeActiveTool}
+				/>
+				<TextSidebar
+					editor={editor}
+					activeTool={activeTool}
+					onChangeActiveTool={onChangeActiveTool}
+				/>
+				<FontSidebar
 					editor={editor}
 					activeTool={activeTool}
 					onChangeActiveTool={onChangeActiveTool}
