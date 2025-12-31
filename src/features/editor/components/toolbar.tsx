@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { type ActiveTool, type Editor, FONT_SIZE, FONT_WEIGHT } from "../types";
 import { isTextType } from "../utils";
+import { FontSizeInput } from "./font-size-input";
 
 interface Props {
 	editor?: Editor;
@@ -49,6 +50,18 @@ export const Toolbar = ({ editor, activeTool, onChangeActiveTool }: Props) => {
 	const selectedObjectType = editor?.selectedObjects[0]?.type;
 
 	const isText = isTextType(selectedObjectType);
+
+	const onChangeFontSize = (value: number) => {
+		if (!selectedObject) {
+			return;
+		}
+
+		editor?.changeFontSize(value);
+		setProperties((current) => ({
+			...current,
+			fontSize: value,
+		}));
+	};
 
 	const onChangeTextAlign = (value: string) => {
 		if (!selectedObject) {
@@ -293,6 +306,14 @@ export const Toolbar = ({ editor, activeTool, onChangeActiveTool }: Props) => {
 							<AlignRightIcon className="size-4" />
 						</Button>
 					</Hint>
+				</div>
+			)}
+			{isText && (
+				<div className="flex h-full items-center justify-center">
+					<FontSizeInput
+						value={properties.fontSize}
+						onChange={onChangeFontSize}
+					/>
 				</div>
 			)}
 			<div className="flex h-full items-center justify-center">
