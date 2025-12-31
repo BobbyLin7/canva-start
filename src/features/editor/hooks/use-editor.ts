@@ -17,6 +17,8 @@ import {
 	type Editor,
 	FILL_COLOR,
 	FONT_FAMILY,
+	FONT_SIZE,
+	FONT_WEIGHT,
 	RECTANGLE_OPTIONS,
 	STROKE_COLOR,
 	STROKE_DASH_ARRAY,
@@ -151,16 +153,14 @@ const buildEditor = ({
 			);
 			addToCanvas(object);
 		},
-		getActiveFillColor: () => {
-			const selectedObject = selectedObjects[0];
+		addText: (text: string, options: Partial<TextboxProps>) => {
+			const object = new Textbox(text, {
+				...TEXT_OPTIONS,
+				fill: fillColor,
+				...options,
+			});
 
-			if (!selectedObject) {
-				return fillColor;
-			}
-
-			const value = selectedObject.get("fill") || fillColor;
-
-			return value as string;
+			addToCanvas(object);
 		},
 		changeFillColor: (value: string) => {
 			setFillColor(value);
@@ -169,16 +169,68 @@ const buildEditor = ({
 			});
 			canvas.renderAll();
 		},
-		getActiveStrokeColor: () => {
-			const selectedObject = selectedObjects[0];
-
-			if (!selectedObject) {
-				return strokeColor;
-			}
-
-			const value = selectedObject.get("stroke") || strokeColor;
-
-			return value;
+		changeOpacity: (value: number) => {
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ opacity: value });
+			});
+			canvas.renderAll();
+		},
+		changeTextAlign: (value: string) => {
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ textAlign: value });
+				}
+			});
+			canvas.renderAll();
+		},
+		changeFontWeight: (value: number) => {
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ fontWeight: value });
+				}
+			});
+			canvas.renderAll();
+		},
+		changeFontStyle: (value: string) => {
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ fontStyle: value });
+				}
+			});
+			canvas.renderAll();
+		},
+		changeFontLinethrough: (value: boolean) => {
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ linethrough: value });
+				}
+			});
+			canvas.renderAll();
+		},
+		changeFontUnderline: (value: boolean) => {
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ underline: value });
+				}
+			});
+			canvas.renderAll();
+		},
+		changeFontSize: (value: number) => {
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ fontSize: value });
+				}
+			});
+			canvas.renderAll();
+		},
+		changeFontFamily: (value: string) => {
+			setFontFamily(value);
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ fontFamily: value });
+				}
+			});
+			canvas.renderAll();
 		},
 		changeStrokeColor: (value: string) => {
 			setStrokeColor(value);
@@ -194,6 +246,45 @@ const buildEditor = ({
 				canvas.freeDrawingBrush.color = value;
 			}
 			canvas.renderAll();
+		},
+		changeStrokeWidth: (value: number) => {
+			setStrokeWidth(value);
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ strokeWidth: value });
+			});
+			if (canvas.freeDrawingBrush) {
+				canvas.freeDrawingBrush.width = value;
+			}
+			canvas.renderAll();
+		},
+		changeStrokeDashArray: (array: number[]) => {
+			setStrokeDashArray(array);
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ strokeDashArray: array });
+			});
+			canvas.renderAll();
+		},
+		getActiveStrokeColor: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return strokeColor;
+			}
+
+			const value = selectedObject.get("stroke") || strokeColor;
+
+			return value;
+		},
+		getActiveFillColor: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return fillColor;
+			}
+
+			const value = selectedObject.get("fill") || fillColor;
+
+			return value as string;
 		},
 		getActiveStrokeWidth: () => {
 			const selectedObject = selectedObjects[0];
@@ -217,22 +308,93 @@ const buildEditor = ({
 
 			return value;
 		},
-		changeStrokeWidth: (value: number) => {
-			setStrokeWidth(value);
-			canvas.getActiveObjects().forEach((object) => {
-				object.set({ strokeWidth: value });
-			});
-			if (canvas.freeDrawingBrush) {
-				canvas.freeDrawingBrush.width = value;
+		getActiveOpacity: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return 1;
 			}
-			canvas.renderAll();
+
+			const value = selectedObject.get("opacity") || 1;
+
+			return value;
 		},
-		changeStrokeDashArray: (array: number[]) => {
-			setStrokeDashArray(array);
-			canvas.getActiveObjects().forEach((object) => {
-				object.set({ strokeDashArray: array });
-			});
-			canvas.renderAll();
+		getActiveFontWeight: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return FONT_WEIGHT;
+			}
+
+			const value = selectedObject.get("fontWeight") || FONT_WEIGHT;
+
+			return value;
+		},
+		getActiveFontFamily: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return fontFamily;
+			}
+
+			const value = selectedObject.get("fontFamily") || fontFamily;
+
+			return value;
+		},
+		getActiveFontStyle: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return "normal";
+			}
+
+			const value = selectedObject.get("fontStyle") || "normal";
+
+			return value;
+		},
+		getActiveFontLinethrough: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return false;
+			}
+
+			const value = selectedObject.get("linethrough") || false;
+
+			return value;
+		},
+		getActiveFontUnderline: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return false;
+			}
+
+			const value = selectedObject.get("underline") || false;
+
+			return value;
+		},
+		getActiveTextAlign: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return "left";
+			}
+
+			const value = selectedObject.get("textAlign") || "left";
+
+			return value;
+		},
+		getActiveFontSize: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return FONT_SIZE;
+			}
+
+			const value = selectedObject.get("fontSize") || FONT_SIZE;
+
+			return value;
 		},
 		bringForward: () => {
 			canvas.getActiveObjects().forEach((object) => {
@@ -246,52 +408,6 @@ const buildEditor = ({
 				canvas.sendObjectBackwards(object);
 			});
 
-			canvas.renderAll();
-		},
-		getActiveOpacity: () => {
-			const selectedObject = selectedObjects[0];
-
-			if (!selectedObject) {
-				return 1;
-			}
-
-			const value = selectedObject.get("opacity") || 1;
-
-			return value;
-		},
-		changeOpacity: (value: number) => {
-			canvas.getActiveObjects().forEach((object) => {
-				object.set({ opacity: value });
-			});
-			canvas.renderAll();
-		},
-		addText: (text: string, options: Partial<TextboxProps>) => {
-			const object = new Textbox(text, {
-				...TEXT_OPTIONS,
-				fill: fillColor,
-				...options,
-			});
-
-			addToCanvas(object);
-		},
-		getActiveFontFamily: () => {
-			const selectedObject = selectedObjects[0];
-
-			if (!selectedObject) {
-				return fontFamily;
-			}
-
-			const value = selectedObject.get("fontFamily") || fontFamily;
-
-			return value;
-		},
-		changeFontFamily: (value: string) => {
-			setFontFamily(value);
-			canvas.getActiveObjects().forEach((object) => {
-				if (isTextType(object.type)) {
-					object.set({ fontFamily: value });
-				}
-			});
 			canvas.renderAll();
 		},
 		selectedObjects,

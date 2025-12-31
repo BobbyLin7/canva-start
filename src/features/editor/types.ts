@@ -113,6 +113,18 @@ export interface Editor {
 	addText: (text: string, options: Partial<TextboxProps>) => void;
 	getActiveFontFamily: () => string;
 	changeFontFamily: (font: string) => void;
+	getActiveFontWeight: () => number;
+	changeFontWeight: (weight: number) => void;
+	getActiveFontStyle: () => string;
+	changeFontStyle: (style: string) => void;
+	getActiveFontLinethrough: () => boolean;
+	changeFontLinethrough: (linethrough: boolean) => void;
+	getActiveFontUnderline: () => boolean;
+	changeFontUnderline: (underline: boolean) => void;
+	getActiveTextAlign: () => string;
+	changeTextAlign: (align: string) => void;
+	getActiveFontSize: () => number;
+	changeFontSize: (size: number) => void;
 	selectedObjects: FabricObject[];
 }
 
