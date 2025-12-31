@@ -1,5 +1,5 @@
 import type { Canvas, FabricObject } from "fabric";
-import * as material from "material-colors";
+import material from "material-colors";
 
 // Extend FabricObject to include custom properties
 declare module "fabric" {
@@ -98,6 +98,13 @@ export interface Editor {
 	addDiamond: () => void;
 	getActiveFillColor: () => string;
 	changeFillColor: (color: string) => void;
+	getActiveStrokeColor: () => string;
+	changeStrokeColor: (color: string) => void;
+	getActiveStrokeWidth: () => number;
+	getActiveStrokeDashArray: () => number[];
+	changeStrokeWidth: (width: number) => void;
+	changeStrokeDashArray: (array: number[]) => void;
+	selectedObjects: FabricObject[];
 }
 
 export const colors = [

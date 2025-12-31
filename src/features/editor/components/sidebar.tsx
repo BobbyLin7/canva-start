@@ -7,6 +7,7 @@ import {
 	SparklesIcon,
 	TypeIcon,
 } from "lucide-react";
+
 import type { ActiveTool } from "../types";
 import { SidebarItem } from "./sidebar-item";
 

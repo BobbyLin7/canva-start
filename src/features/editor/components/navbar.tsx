@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { BsCloudCheck, BsCloudSlash } from "react-icons/bs";
 import { CiFileOn } from "react-icons/ci";
+
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,9 +18,9 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { Logo } from "@/features/editor/components/logo";
+import type { ActiveTool } from "@/features/editor/types";
 import { cn } from "@/lib/utils";
-import type { ActiveTool } from "../types";
-import { Logo } from "./logo";
 
 interface Props {
 	activeTool: ActiveTool;

@@ -20,6 +20,7 @@ import {
 	STROKE_WIDTH,
 	TRIANGLE_OPTIONS,
 } from "../types";
+import { isTextType } from "../utils";
 import { useAutoSize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
 
@@ -31,9 +32,9 @@ const buildEditor = ({
 	strokeDashArray,
 	selectedObjects,
 	setFillColor,
-	// setStrokeColor,
-	// setStrokeWidth,
-	// setStrokeDashArray,
+	setStrokeColor,
+	setStrokeWidth,
+	setStrokeDashArray,
 	// setSelectedObjects,
 }: BuildEditorProps): Editor => {
 	const getWorkspace = () => {
@@ -162,6 +163,72 @@ const buildEditor = ({
 			});
 			canvas.renderAll();
 		},
+		getActiveStrokeColor: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return strokeColor;
+			}
+
+			const value = selectedObject.get("stroke") || strokeColor;
+
+			return value;
+		},
+		changeStrokeColor: (value: string) => {
+			setStrokeColor(value);
+			canvas.getActiveObjects().forEach((object) => {
+				if (isTextType(object.type)) {
+					object.set({ fill: value });
+					return;
+				}
+
+				object.set({ stroke: value });
+			});
+			if (canvas.freeDrawingBrush) {
+				canvas.freeDrawingBrush.color = value;
+			}
+			canvas.renderAll();
+		},
+		getActiveStrokeWidth: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return strokeWidth;
+			}
+
+			const value = selectedObject.get("strokeWidth") || strokeWidth;
+
+			return value;
+		},
+		getActiveStrokeDashArray: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return strokeDashArray;
+			}
+
+			const value = selectedObject.get("strokeDashArray") || strokeDashArray;
+
+			return value;
+		},
+		changeStrokeWidth: (value: number) => {
+			setStrokeWidth(value);
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ strokeWidth: value });
+			});
+			if (canvas.freeDrawingBrush) {
+				canvas.freeDrawingBrush.width = value;
+			}
+			canvas.renderAll();
+		},
+		changeStrokeDashArray: (array: number[]) => {
+			setStrokeDashArray(array);
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ strokeDashArray: array });
+			});
+			canvas.renderAll();
+		},
+		selectedObjects,
 	};
 };
 
@@ -204,7 +271,14 @@ export function useEditor() {
 		}
 
 		return undefined;
-	}, [canvas, fillColor, strokeColor, strokeWidth, strokeDashArray]);
+	}, [
+		canvas,
+		fillColor,
+		strokeColor,
+		strokeWidth,
+		strokeDashArray,
+		selectedObjects,
+	]);
 
 	const init = useCallback(
 		({

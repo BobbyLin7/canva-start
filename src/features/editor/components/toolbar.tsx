@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BsBorderWidth } from "react-icons/bs";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -12,10 +13,18 @@ interface Props {
 
 export const Toolbar = ({ editor, activeTool, onChangeActiveTool }: Props) => {
 	const initialFillColor = editor?.getActiveFillColor();
+	const initialStrokeColor = editor?.getActiveStrokeColor();
 
 	const [properties, setProperties] = useState({
 		fillColor: initialFillColor,
+		strokeColor: initialStrokeColor,
 	});
+
+	if (editor?.selectedObjects.length === 0) {
+		return (
+			<div className="z-49 flex h-[56px] w-full shrink-0 items-center gap-x-2 overflow-x-auto border-b bg-white p-2" />
+		);
+	}
 
 	return (
 		<div className="z-49 flex h-[56px] w-full shrink-0 items-center gap-x-2 overflow-x-auto border-b bg-white p-2">
@@ -31,6 +40,33 @@ export const Toolbar = ({ editor, activeTool, onChangeActiveTool }: Props) => {
 							className="size-4 rounded-sm border"
 							style={{ backgroundColor: properties.fillColor }}
 						/>
+					</Button>
+				</Hint>
+			</div>
+			<div className="flex h-full items-center justify-center">
+				<Hint label="Stroke color" side="bottom" sideOffset={5}>
+					<Button
+						onClick={() => onChangeActiveTool("stroke-color")}
+						size="icon"
+						variant="ghost"
+						className={cn(activeTool === "stroke-color" && "bg-gray-100")}
+					>
+						<div
+							className="size-4 rounded-sm border-2 bg-white"
+							style={{ borderColor: properties.strokeColor }}
+						/>
+					</Button>
+				</Hint>
+			</div>
+			<div className="flex h-full items-center justify-center">
+				<Hint label="Stroke width" side="bottom" sideOffset={5}>
+					<Button
+						onClick={() => onChangeActiveTool("stroke-width")}
+						size="icon"
+						variant="ghost"
+						className={cn(activeTool === "stroke-width" && "bg-gray-100")}
+					>
+						<BsBorderWidth className="size-4" />
 					</Button>
 				</Hint>
 			</div>

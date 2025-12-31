@@ -1,5 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+
 import { type ActiveTool, type Editor, FILL_COLOR } from "../types";
 import { ColorPicker } from "./color-picker";
 import { ToolSidebarClose } from "./tool-sidebar-close";
