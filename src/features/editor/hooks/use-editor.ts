@@ -407,7 +407,13 @@ const buildEditor = ({
 			canvas.getActiveObjects().forEach((object) => {
 				canvas.sendObjectBackwards(object);
 			});
-
+			canvas.discardActiveObject();
+			canvas.renderAll();
+		},
+		delete: () => {
+			canvas.getActiveObjects().forEach((object) => {
+				canvas.remove(object);
+			});
 			canvas.renderAll();
 		},
 		selectedObjects,
