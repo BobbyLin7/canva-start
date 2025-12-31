@@ -151,7 +151,6 @@ export const colors = [
 ];
 
 export const TEXT_OPTIONS = {
-	type: "textbox",
 	left: 100,
 	top: 100,
 	fill: FILL_COLOR,
