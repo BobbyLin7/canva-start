@@ -242,6 +242,23 @@ const buildEditor = ({
 
 			canvas.renderAll();
 		},
+		getActiveOpacity: () => {
+			const selectedObject = selectedObjects[0];
+
+			if (!selectedObject) {
+				return 1;
+			}
+
+			const value = selectedObject.get("opacity") || 1;
+
+			return value;
+		},
+		changeOpacity: (value: number) => {
+			canvas.getActiveObjects().forEach((object) => {
+				object.set({ opacity: value });
+			});
+			canvas.renderAll();
+		},
 		selectedObjects,
 	};
 };

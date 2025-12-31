@@ -106,6 +106,8 @@ export interface Editor {
 	changeStrokeDashArray: (array: number[]) => void;
 	bringForward: () => void;
 	sendBackwards: () => void;
+	getActiveOpacity: () => number;
+	changeOpacity: (opacity: number) => void;
 	selectedObjects: FabricObject[];
 }
 
