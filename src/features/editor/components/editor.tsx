@@ -15,6 +15,7 @@ import { TextSidebar } from "@/features/editor/components/text-sidebar";
 import { Toolbar } from "@/features/editor/components/toolbar";
 import { useEditor } from "@/features/editor/hooks/use-editor";
 import type { ActiveTool } from "@/features/editor/types";
+import { AiSidebar } from "./ai-sidebar";
 
 export const Editor = () => {
 	const { init, editor } = useEditor();
@@ -103,6 +104,11 @@ export const Editor = () => {
 					onChangeActiveTool={onChangeActiveTool}
 				/>
 				<FilterSidebar
+					editor={editor}
+					activeTool={activeTool}
+					onChangeActiveTool={onChangeActiveTool}
+				/>
+				<AiSidebar
 					editor={editor}
 					activeTool={activeTool}
 					onChangeActiveTool={onChangeActiveTool}
