@@ -27,7 +27,7 @@ import {
 	TEXT_OPTIONS,
 	TRIANGLE_OPTIONS,
 } from "../types";
-import { isTextType } from "../utils";
+import { createFilter, isTextType } from "../utils";
 import { useAutoSize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
 
@@ -432,6 +432,20 @@ const buildEditor = ({
 			);
 
 			addToCanvas(image);
+		},
+		changeImageFilter: (value: string) => {
+			const objects = canvas.getActiveObjects();
+			objects.forEach((object) => {
+				if (object.type === "image") {
+					const imageObject = object as FabricImage;
+
+					const effect = createFilter(value);
+
+					imageObject.filters = effect ? [effect] : [];
+					imageObject.applyFilters();
+					canvas.renderAll();
+				}
+			});
 		},
 		selectedObjects,
 	};

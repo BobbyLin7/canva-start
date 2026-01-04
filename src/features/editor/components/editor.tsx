@@ -2,6 +2,7 @@ import { Canvas } from "fabric";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { FillColorSidebar } from "@/features/editor/components/fill-color-sidebar";
+import { FilterSidebar } from "@/features/editor/components/filter-sidebar";
 import { FontSidebar } from "@/features/editor/components/font-sidebar";
 import { Footer } from "@/features/editor/components/footer";
 import { ImageSidebar } from "@/features/editor/components/image-sidebar";
@@ -97,6 +98,11 @@ export const Editor = () => {
 					onChangeActiveTool={onChangeActiveTool}
 				/>
 				<ImageSidebar
+					editor={editor}
+					activeTool={activeTool}
+					onChangeActiveTool={onChangeActiveTool}
+				/>
+				<FilterSidebar
 					editor={editor}
 					activeTool={activeTool}
 					onChangeActiveTool={onChangeActiveTool}

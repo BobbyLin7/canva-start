@@ -126,6 +126,7 @@ export interface Editor {
 	getActiveFontSize: () => number;
 	changeFontSize: (size: number) => void;
 	addImage: (value: string) => Promise<void>;
+	changeImageFilter: (value: string) => void;
 	delete: () => void;
 	selectedObjects: FabricObject[];
 }
