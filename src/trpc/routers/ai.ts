@@ -32,4 +32,20 @@ export const aiRouter = {
 
 			return res[0];
 		}),
+	removeBg: publicProcedure
+		.input(
+			z.object({
+				image: z.string(),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			const output: unknown = await replicate.run(
+				"cjwbw/rembg:fb8af171cfa1616ddcf1242c093f9c46bcada5ad4cf6f2fbe8b81b330ec5c003",
+				{ input },
+			);
+
+			const res = output as string;
+
+			return res;
+		}),
 } satisfies TRPCRouterRecord;

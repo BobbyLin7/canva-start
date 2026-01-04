@@ -16,6 +16,7 @@ import { Toolbar } from "@/features/editor/components/toolbar";
 import { useEditor } from "@/features/editor/hooks/use-editor";
 import type { ActiveTool } from "@/features/editor/types";
 import { AiSidebar } from "./ai-sidebar";
+import { RemoveBgSidebar } from "./remove-bg-sidebar";
 
 export const Editor = () => {
 	const { init, editor } = useEditor();
@@ -109,6 +110,11 @@ export const Editor = () => {
 					onChangeActiveTool={onChangeActiveTool}
 				/>
 				<AiSidebar
+					editor={editor}
+					activeTool={activeTool}
+					onChangeActiveTool={onChangeActiveTool}
+				/>
+				<RemoveBgSidebar
 					editor={editor}
 					activeTool={activeTool}
 					onChangeActiveTool={onChangeActiveTool}
