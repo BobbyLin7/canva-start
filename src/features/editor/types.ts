@@ -125,6 +125,7 @@ export interface Editor {
 	changeTextAlign: (align: string) => void;
 	getActiveFontSize: () => number;
 	changeFontSize: (size: number) => void;
+	addImage: (value: string) => Promise<void>;
 	delete: () => void;
 	selectedObjects: FabricObject[];
 }

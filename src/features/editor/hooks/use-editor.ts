@@ -1,6 +1,7 @@
 import {
 	type Canvas,
 	Circle,
+	FabricImage,
 	FabricObject,
 	Polygon,
 	Rect,
@@ -415,6 +416,22 @@ const buildEditor = ({
 				canvas.remove(object);
 			});
 			canvas.renderAll();
+		},
+		addImage: async (value: string) => {
+			const workspace = getWorkspace();
+
+			const image = await FabricImage.fromURL(
+				value,
+				{
+					crossOrigin: "anonymous",
+				},
+				{
+					width: workspace?.width || 0,
+					height: workspace?.height || 0,
+				},
+			);
+
+			addToCanvas(image);
 		},
 		selectedObjects,
 	};
