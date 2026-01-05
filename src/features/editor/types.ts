@@ -89,6 +89,8 @@ export type BuildEditorProps = {
 	setStrokeWidth: (width: number) => void;
 	setStrokeDashArray: (array: number[]) => void;
 	setFontFamily: (font: string) => void;
+	copy: () => void;
+	paste: () => void;
 };
 
 export interface Editor {
@@ -128,6 +130,8 @@ export interface Editor {
 	addImage: (value: string) => Promise<void>;
 	changeImageFilter: (value: string) => void;
 	delete: () => void;
+	onCopy: () => void;
+	onPaste: () => void;
 	selectedObjects: FabricObject[];
 }
 
