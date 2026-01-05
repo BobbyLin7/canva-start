@@ -456,11 +456,34 @@ const buildEditor = ({
 		onPaste: () => {
 			paste();
 		},
+		disableDrawingMode: () => {
+			canvas.isDrawingMode = false;
+		},
+		enableDrawingMode: () => {
+			canvas.discardActiveObject();
+			canvas.renderAll();
+			canvas.isDrawingMode = true;
+			if (!canvas.freeDrawingBrush) return;
+			canvas.freeDrawingBrush.width = strokeWidth;
+			canvas.freeDrawingBrush.color = strokeColor;
+		},
 		selectedObjects,
 	};
 };
 
-export function useEditor() {
+interface Props {
+	defaultState?: string;
+	defaultWidth?: number;
+	defaultHeight?: number;
+	clearSelectionCallback?: () => void;
+	saveCallback?: (values: {
+		json: string;
+		height: number;
+		width: number;
+	}) => void;
+}
+
+export function useEditor({ clearSelectionCallback }: Props) {
 	const [canvas, setCanvas] = useState<Canvas | null>(null);
 	const [container, setContainer] = useState<HTMLDivElement | null>(null);
 

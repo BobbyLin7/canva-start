@@ -23,3 +23,13 @@ export const filters = [
 	"saturation",
 	"gamma",
 ];
+
+export const selectionDependentTools = [
+	"fill",
+	"font",
+	"filter",
+	"opacity",
+	"remove-bg",
+	"stroke-color",
+	"stroke-width",
+];

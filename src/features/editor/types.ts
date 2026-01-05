@@ -132,6 +132,8 @@ export interface Editor {
 	delete: () => void;
 	onCopy: () => void;
 	onPaste: () => void;
+	disableDrawingMode: () => void;
+	enableDrawingMode: () => void;
 	selectedObjects: FabricObject[];
 }
 

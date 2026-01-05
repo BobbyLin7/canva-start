@@ -15,25 +15,35 @@ import { TextSidebar } from "@/features/editor/components/text-sidebar";
 import { Toolbar } from "@/features/editor/components/toolbar";
 import { useEditor } from "@/features/editor/hooks/use-editor";
 import type { ActiveTool } from "@/features/editor/types";
+import { selectionDependentTools } from "../constants";
 import { AiSidebar } from "./ai-sidebar";
+import { DrawSidebar } from "./draw-sidebar";
 import { RemoveBgSidebar } from "./remove-bg-sidebar";
 
 export const Editor = () => {
-	const { init, editor } = useEditor();
-
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const workspaceRef = useRef<HTMLDivElement | null>(null);
 
 	const [activeTool, setActiveTool] = useState<ActiveTool>("select");
 
+	const onClearSelection = useCallback(() => {
+		if (selectionDependentTools.includes(activeTool)) {
+			setActiveTool("select");
+		}
+	}, [activeTool]);
+
+	const { init, editor } = useEditor({
+		clearSelectionCallback: onClearSelection,
+	});
+
 	const onChangeActiveTool = useCallback(
 		(tool: ActiveTool) => {
 			if (tool === "draw") {
-				//
+				editor?.enableDrawingMode();
 			}
 
 			if (activeTool === "draw") {
-				//
+				editor?.disableDrawingMode();
 			}
 
 			if (tool === activeTool) {
@@ -42,7 +52,7 @@ export const Editor = () => {
 
 			setActiveTool(tool);
 		},
-		[activeTool],
+		[activeTool, editor],
 	);
 
 	useEffect(() => {
@@ -115,6 +125,11 @@ export const Editor = () => {
 					onChangeActiveTool={onChangeActiveTool}
 				/>
 				<RemoveBgSidebar
+					editor={editor}
+					activeTool={activeTool}
+					onChangeActiveTool={onChangeActiveTool}
+				/>
+				<DrawSidebar
 					editor={editor}
 					activeTool={activeTool}
 					onChangeActiveTool={onChangeActiveTool}
