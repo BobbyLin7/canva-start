@@ -19,6 +19,7 @@ import { selectionDependentTools } from "../constants";
 import { AiSidebar } from "./ai-sidebar";
 import { DrawSidebar } from "./draw-sidebar";
 import { RemoveBgSidebar } from "./remove-bg-sidebar";
+import { SettingsSidebar } from "./settings-sidebar";
 
 export const Editor = () => {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -130,6 +131,11 @@ export const Editor = () => {
 					onChangeActiveTool={onChangeActiveTool}
 				/>
 				<DrawSidebar
+					editor={editor}
+					activeTool={activeTool}
+					onChangeActiveTool={onChangeActiveTool}
+				/>
+				<SettingsSidebar
 					editor={editor}
 					activeTool={activeTool}
 					onChangeActiveTool={onChangeActiveTool}

@@ -48,6 +48,7 @@ const buildEditor = ({
 	// setSelectedObjects,
 	copy,
 	paste,
+	autoZoom,
 }: BuildEditorProps): Editor => {
 	const getWorkspace = () => {
 		return canvas.getObjects().find((object) => object.name === "clip");
@@ -467,6 +468,20 @@ const buildEditor = ({
 			canvas.freeDrawingBrush.width = strokeWidth;
 			canvas.freeDrawingBrush.color = strokeColor;
 		},
+		getWorkspace,
+		changeSize: (value: { width: number; height: number }) => {
+			const workspace = getWorkspace();
+
+			workspace?.set(value);
+			autoZoom();
+			// save();
+		},
+		changeBackground: (value: string) => {
+			const workspace = getWorkspace();
+			workspace?.set({ fill: value });
+			canvas.renderAll();
+			// save();
+		},
 		selectedObjects,
 	};
 };
@@ -498,7 +513,7 @@ export function useEditor({ clearSelectionCallback }: Props) {
 
 	const { copy, paste } = useClipboard({ canvas });
 
-	useAutoSize({ canvas, container });
+	const { autoZoom } = useAutoSize({ canvas, container });
 
 	useCanvasEvents({
 		save: () => {},
@@ -510,6 +525,7 @@ export function useEditor({ clearSelectionCallback }: Props) {
 	const editor = useMemo(() => {
 		if (canvas) {
 			return buildEditor({
+				autoZoom,
 				canvas,
 				fillColor,
 				strokeColor,
@@ -539,6 +555,7 @@ export function useEditor({ clearSelectionCallback }: Props) {
 		fontFamily,
 		copy,
 		paste,
+		autoZoom,
 	]);
 
 	const init = useCallback(

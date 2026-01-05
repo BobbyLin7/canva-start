@@ -91,6 +91,7 @@ export type BuildEditorProps = {
 	setFontFamily: (font: string) => void;
 	copy: () => void;
 	paste: () => void;
+	autoZoom: () => void;
 };
 
 export interface Editor {
@@ -134,6 +135,9 @@ export interface Editor {
 	onPaste: () => void;
 	disableDrawingMode: () => void;
 	enableDrawingMode: () => void;
+	getWorkspace: () => FabricObject | undefined;
+	changeBackground: (value: string) => void;
+	changeSize: (value: { width: number; height: number }) => void;
 	selectedObjects: FabricObject[];
 }
 

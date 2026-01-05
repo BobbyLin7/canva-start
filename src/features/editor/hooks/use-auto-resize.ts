@@ -68,4 +68,6 @@ export function useAutoSize({ canvas, container }: Props) {
 			}
 		};
 	}, [canvas, container, autoZoom]);
+
+	return { autoZoom };
 }
