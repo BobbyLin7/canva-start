@@ -138,6 +138,9 @@ export interface Editor {
 	getWorkspace: () => FabricObject | undefined;
 	changeBackground: (value: string) => void;
 	changeSize: (value: { width: number; height: number }) => void;
+	autoZoom: () => void;
+	zoomIn: () => void;
+	zoomOut: () => void;
 	selectedObjects: FabricObject[];
 }
 
