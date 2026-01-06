@@ -1,3 +1,4 @@
+import { useMutationState } from "@tanstack/react-query";
 import {
 	ChevronDownIcon,
 	DownloadIcon,
@@ -9,7 +10,6 @@ import {
 import { BsCloudCheck, BsCloudSlash } from "react-icons/bs";
 import { CiFileOn } from "react-icons/ci";
 import { useFilePicker } from "use-file-picker";
-
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,20 +19,37 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { UserButton } from "@/features/auth/components/user-button";
 import { Logo } from "@/features/editor/components/logo";
 import type { ActiveTool, Editor } from "@/features/editor/types";
 import { cn } from "@/lib/utils";
 
 interface Props {
+	id: string;
 	editor?: Editor;
 	activeTool: ActiveTool;
 	onChangeActiveTool: (tool: ActiveTool) => void;
 }
 
-export const Navbar = ({ editor, activeTool, onChangeActiveTool }: Props) => {
-	const isPending = false;
+export const Navbar = ({
+	id,
+	editor,
+	activeTool,
+	onChangeActiveTool,
+}: Props) => {
+	const data = useMutationState({
+		filters: {
+			mutationKey: ["project", { id }],
+			exact: true,
+		},
+		select: (mutation) => mutation.state.status,
+	});
 
-	const isError = false;
+	const currentStatus = data[data.length - 1];
+
+	const isPending = currentStatus === "pending";
+
+	const isError = currentStatus === "error";
 
 	const { openFilePicker } = useFilePicker({
 		accept: ".json",
@@ -183,6 +200,7 @@ export const Navbar = ({ editor, activeTool, onChangeActiveTool }: Props) => {
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
+					<UserButton />
 				</div>
 			</div>
 		</nav>

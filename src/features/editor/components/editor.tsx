@@ -75,6 +75,7 @@ export const Editor = () => {
 	return (
 		<div className="flex h-full flex-col">
 			<Navbar
+				id={""}
 				editor={editor}
 				activeTool={activeTool}
 				onChangeActiveTool={onChangeActiveTool}
