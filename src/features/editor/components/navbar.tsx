@@ -19,15 +19,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { Logo } from "@/features/editor/components/logo";
-import type { ActiveTool } from "@/features/editor/types";
+import type { ActiveTool, Editor } from "@/features/editor/types";
 import { cn } from "@/lib/utils";
 
 interface Props {
+	editor?: Editor;
 	activeTool: ActiveTool;
 	onChangeActiveTool: (tool: ActiveTool) => void;
 }
 
-export const Navbar = ({ activeTool, onChangeActiveTool }: Props) => {
+export const Navbar = ({ editor, activeTool, onChangeActiveTool }: Props) => {
 	const isPending = false;
 
 	const isError = false;
@@ -68,20 +69,20 @@ export const Navbar = ({ activeTool, onChangeActiveTool }: Props) => {
 				</Hint>
 				<Hint label="Undo" side="bottom" sideOffset={10}>
 					<Button
-						disabled={false}
+						disabled={!editor?.canUndo()}
 						variant="ghost"
 						size="icon"
-						onClick={() => {}}
+						onClick={() => editor?.onUndo()}
 					>
 						<Undo2Icon className="size-4" />
 					</Button>
 				</Hint>
 				<Hint label="Redo" side="bottom" sideOffset={10}>
 					<Button
-						disabled={false}
+						disabled={!editor?.canRedo()}
 						variant="ghost"
 						size="icon"
-						onClick={() => {}}
+						onClick={() => editor?.onRedo()}
 					>
 						<Redo2Icon className="size-4" />
 					</Button>

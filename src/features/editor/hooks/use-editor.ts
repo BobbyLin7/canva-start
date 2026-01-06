@@ -12,6 +12,7 @@ import {
 	Triangle,
 } from "fabric";
 import { useCallback, useMemo, useState } from "react";
+import { JSON_KEYS } from "../constants";
 import {
 	type BuildEditorProps,
 	CIRCLE_OPTIONS,
@@ -32,8 +33,14 @@ import { createFilter, isTextType } from "../utils";
 import { useAutoSize } from "./use-auto-resize";
 import { useCanvasEvents } from "./use-canvas-events";
 import { useClipboard } from "./use-clipboard";
+import { useHistory } from "./use-history";
 
 const buildEditor = ({
+	undo,
+	redo,
+	save,
+	canUndo,
+	canRedo,
 	canvas,
 	fillColor,
 	strokeColor,
@@ -475,13 +482,13 @@ const buildEditor = ({
 
 			workspace?.set(value);
 			autoZoom();
-			// save();
+			save();
 		},
 		changeBackground: (value: string) => {
 			const workspace = getWorkspace();
 			workspace?.set({ fill: value });
 			canvas.renderAll();
-			// save();
+			save();
 		},
 		autoZoom,
 		zoomIn: () => {
@@ -502,6 +509,10 @@ const buildEditor = ({
 				zoomRatio < 0.2 ? 0.2 : zoomRatio,
 			);
 		},
+		canUndo,
+		canRedo,
+		onUndo: () => undo(),
+		onRedo: () => redo(),
 		selectedObjects,
 	};
 };
@@ -518,7 +529,7 @@ interface Props {
 	}) => void;
 }
 
-export function useEditor({ clearSelectionCallback }: Props) {
+export function useEditor({ clearSelectionCallback, saveCallback }: Props) {
 	const [canvas, setCanvas] = useState<Canvas | null>(null);
 	const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
@@ -535,16 +546,27 @@ export function useEditor({ clearSelectionCallback }: Props) {
 
 	const { autoZoom } = useAutoSize({ canvas, container });
 
+	const { save, canRedo, canUndo, undo, redo, canvasHistory, setHistoryIndex } =
+		useHistory({
+			canvas,
+			saveCallback,
+		});
+
 	useCanvasEvents({
-		save: () => {},
+		save,
 		canvas,
 		setSelectedObjects,
-		clearSelectionCallback: () => {},
+		clearSelectionCallback,
 	});
 
 	const editor = useMemo(() => {
 		if (canvas) {
 			return buildEditor({
+				undo,
+				redo,
+				save,
+				canUndo,
+				canRedo,
 				autoZoom,
 				canvas,
 				fillColor,
@@ -576,6 +598,11 @@ export function useEditor({ clearSelectionCallback }: Props) {
 		copy,
 		paste,
 		autoZoom,
+		undo,
+		redo,
+		save,
+		canUndo,
+		canRedo,
 	]);
 
 	const init = useCallback(
@@ -620,8 +647,14 @@ export function useEditor({ clearSelectionCallback }: Props) {
 
 			setCanvas(initialCanvas);
 			setContainer(initialContainer);
+
+			const currentState = JSON.stringify(
+				initialCanvas.toDatalessObject(JSON_KEYS),
+			);
+			canvasHistory.current = [currentState];
+			setHistoryIndex(0);
 		},
-		[],
+		[canvasHistory, setHistoryIndex],
 	);
 
 	return {

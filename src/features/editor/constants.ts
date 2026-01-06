@@ -33,3 +33,14 @@ export const selectionDependentTools = [
 	"stroke-color",
 	"stroke-width",
 ];
+
+export const JSON_KEYS = [
+	"name",
+	"gradientAngle",
+	"selectable",
+	"hasControls",
+	"linkData",
+	"editable",
+	"extensionType",
+	"extension",
+];
