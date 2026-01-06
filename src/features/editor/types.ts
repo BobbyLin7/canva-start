@@ -150,6 +150,11 @@ export interface Editor {
 	onRedo: () => void;
 	canUndo: () => boolean;
 	canRedo: () => boolean;
+	savePng: () => void;
+	saveJpg: () => void;
+	saveSvg: () => void;
+	saveJson: () => void;
+	loadJson: (json: string) => void;
 	selectedObjects: FabricObject[];
 }
 
